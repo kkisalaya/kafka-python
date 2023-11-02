@@ -32,9 +32,11 @@ jobs:
         password: ${{needs.ecr_login.outputs.ecr_password}}
     steps:
         - run: echo "Running from inside container pulled from ECR"
-        - run: echo "Pass is $PASS"
         - name: Get Container OS Info
           run: |
             cat /etc/os-release
+        - name: Read the files in the repository
+          run: |
+            ls /github/workspace/
         - run: echo "Completed successfully"
         
