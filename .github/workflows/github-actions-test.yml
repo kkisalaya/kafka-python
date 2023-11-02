@@ -1,0 +1,15 @@
+name: GitHub Actions Getting Started
+run-name: ${{github.actor}} is testing out Github Actions
+on: [push]
+jobs:
+  Sample-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "The github action job was automatigically triggered by a ${{github.event_name}} event."
+      - run: echo "The job is running on ${{runner.os}} for repository ${{github.repository}}"
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: List files in the repository
+        run: |
+          ls ${{github.workspace}}
+      - run: echo "The job's status is ${{job.status}}".
