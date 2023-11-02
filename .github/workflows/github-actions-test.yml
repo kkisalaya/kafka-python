@@ -32,7 +32,7 @@ jobs:
         password: $PASS
     steps:
         - run: echo "Running from inside container pulled from ECR"
-        #- run: echo "Pass is $PASS"
+        - run: echo "Pass is $PASS"
         - name: Get Container OS Info
           run: |
             cat /etc/os-release
