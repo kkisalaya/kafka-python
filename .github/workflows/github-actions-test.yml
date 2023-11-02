@@ -26,7 +26,8 @@ jobs:
     env:
       PASS: ${{needs.ecr_login.outputs.ecr_password}}
     container:
-      image: 282904853176.dkr.ecr.us-west-2.amazonaws.com/github-runner-playground:latest
+      #image: 282904853176.dkr.ecr.us-west-2.amazonaws.com/github-runner-playground:latest
+      image: 282904853176.dkr.ecr.us-west-2.amazonaws.com/veribom-scanner-backend:df8aafbb
       credentials:
         username: AWS
         password: ${{needs.ecr_login.outputs.ecr_password}}
@@ -42,5 +43,8 @@ jobs:
         - name: Read the files in the repository
           run: |
             ls $GITHUB_WORKSPACE
+        - name: Read files in application directory
+          run: |
+            ls /opt/venv/lib/python3.11/site-packages/veribom_scanner/
         - run: echo "Completed successfully"
         
