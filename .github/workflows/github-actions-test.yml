@@ -2,7 +2,7 @@ name: GitHub Actions Getting Started ECR Test
 run-name: ${{github.actor}} is testing out Github Actions with ECR Image
 on: [push]
 jobs:
-  ECR-Login:
+  ecr_login:
     runs-on: ubuntu-latest
     outputs:
         ecr_password: ${{ steps.retrieve_password.outputs.ecr_password}}
@@ -19,13 +19,13 @@ jobs:
         run: echo "::set-output name=ecr_password::$(aws ecr get-login-password)"
   
   Run-Container:
-    needs: ECR-Login
+    needs: ecr_login
     runs-on: ubuntu-latest
     container:
       image: 282904853176.dkr.ecr.us-west-2.amazonaws.com/github-runner-playground:latest
       credentials:
         username: AWS
-        password: ${{needs.ECR-Login.outputs.ecr_password}}
+        password: ${{needs.ecr_login.outputs.ecr_password}}
     steps:
         - run: echo "Running from inside container pulled from ECR"
         - name: Get Container OS Info
