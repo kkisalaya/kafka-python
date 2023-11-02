@@ -1,15 +1,35 @@
-name: GitHub Actions Getting Started
-run-name: ${{github.actor}} is testing out Github Actions
+name: GitHub Actions Getting Started ECR Test
+run-name: ${{github.actor}} is testing out Github Actions with ECR Image
 on: [push]
 jobs:
-  Sample-GitHub-Actions:
+  ECR-Login:
     runs-on: ubuntu-latest
+    outputs:
+        ecr_password: ${{ steps.retrieve_password.outputs.ecr_password}}
     steps:
       - run: echo "The github action job was automatigically triggered by a ${{github.event_name}} event."
-      - run: echo "The job is running on ${{runner.os}} for repository ${{github.repository}}"
-      - name: Check out code
-        uses: actions/checkout@v4
-      - name: List files in the repository
-        run: |
-          ls ${{github.workspace}}
-      - run: echo "The job's status is ${{job.status}}".
+      - name: Setup AWS CLI
+        uses: chrislennon/action-aws-cli@1.1
+      - id: retrieve_password
+        name: Retrieve ECR credentials
+        env:
+          AWS_ACCESS_KEY_ID: ${{ACCESS_KEY_ID}}
+          AWS_SECRET_ACCESS_KEY: ${{SECRET_ACCESS_KEY}}
+          AWS_DEFAULT_REGION: ${{REGION}}
+        run: echo "::set-output name=ecr_password::$(aws ecr get-login-password)"
+  
+  Run-Container:
+    needs: ECR-Login
+    runs-on: ubuntu-latest
+    container:
+      image: 282904853176.dkr.ecr.us-west-2.amazonaws.com/github-runner-playground:latest
+      credentials:
+        username: AWS
+        password: ${{needs.ECR-Login.outputs.ecr_password}}
+    steps:
+        - run: echo "Running from inside container pulled from ECR"
+        - name: Get Container OS Info
+          run: |
+            cat /etc/os-release
+        - run: echo "Completed successfully"
+        
