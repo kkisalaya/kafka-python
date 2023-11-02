@@ -35,8 +35,10 @@ jobs:
         - name: Get Container OS Info
           run: |
             cat /etc/os-release
-        - name: Checkout repository
-          uses: actions/checkout@v4
+        #- name: Checkout repository
+        #  uses: actions/checkout@v4
+        - run: echo $GITHUB_WORKSPACE
+        - run: echo ${{github.workspace}}
         - name: Read the files in the repository
           run: |
             ls ${{github.workspace}}
