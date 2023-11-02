@@ -25,11 +25,11 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PASS: ${{needs.ecr_login.outputs.ecr_password}}
-    container:
-      image: 282904853176.dkr.ecr.us-west-2.amazonaws.com/github-runner-playground:latest
-      credentials:
-        username: AWS
-        password: $PASS
+    #container:
+    #  image: 282904853176.dkr.ecr.us-west-2.amazonaws.com/github-runner-playground:latest
+    #  credentials:
+    #    username: AWS
+    #    password: $PASS
     steps:
         - run: echo "Running from inside container pulled from ECR"
         - run: echo "Pass is $PASS"
