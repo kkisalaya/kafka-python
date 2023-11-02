@@ -17,24 +17,24 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{secrets.SECRET_ACCESS_KEY}}
           AWS_DEFAULT_REGION: ${{secrets.REGION}}
         #run: echo "ecr_password=Test_PWD_VALUE" >> $GITHUB_OUTPUT
-        run: echo "ecr_password=$(aws ecr get-login-password)" 
+        run: echo "ecr_password=$(aws ecr get-login-password)" >> "$GITHUB_OUTPUT"
         #run: echo "::set-output name=ecr_password::$(aws ecr get-login-password)"
   
-  #Run-Container:
-  #  needs: ecr_login
-  #  runs-on: ubuntu-latest
-  #  env:
-  #    PASS: ${{needs.ecr_login.outputs.ecr_password}}
-    #container:
-    #  image: 282904853176.dkr.ecr.us-west-2.amazonaws.com/github-runner-playground:latest
-    #  credentials:
-    #    username: AWS
-    #    password: $PASS
- #   steps:
- #       - run: echo "Running from inside container pulled from ECR"
- #       - run: echo "Pass is $PASS"
- #       - name: Get Container OS Info
- #         run: |
- #           cat /etc/os-release
- #       - run: echo "Completed successfully"
+  run_container:
+    needs: ecr_login
+    runs-on: ubuntu-latest
+    env:
+      PASS: ${{needs.ecr_login.outputs.ecr_password}}
+    container:
+      image: 282904853176.dkr.ecr.us-west-2.amazonaws.com/github-runner-playground:latest
+      credentials:
+        username: AWS
+        password: $PASS
+    steps:
+        - run: echo "Running from inside container pulled from ECR"
+        #- run: echo "Pass is $PASS"
+        - name: Get Container OS Info
+          run: |
+            cat /etc/os-release
+        - run: echo "Completed successfully"
         
