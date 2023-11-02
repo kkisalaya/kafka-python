@@ -16,8 +16,8 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{secrets.ACCESS_KEY_ID}}
           AWS_SECRET_ACCESS_KEY: ${{secrets.SECRET_ACCESS_KEY}}
           AWS_DEFAULT_REGION: ${{secrets.REGION}}
-        run: echo "ecr_password=Test_PWD_VALUE" >> $GITHUB_OUTPUT
-        #run: echo "ecr_password=$(aws ecr get-login-password)" >> $GITHUB_OUTPUT
+        #run: echo "ecr_password=Test_PWD_VALUE" >> $GITHUB_OUTPUT
+        run: echo "ecr_password=$(aws ecr get-login-password)" >> $GITHUB_OUTPUT
         #run: echo "::set-output name=ecr_password::$(aws ecr get-login-password)"
   
   Run-Container:
