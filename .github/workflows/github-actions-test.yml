@@ -13,9 +13,9 @@ jobs:
       - id: retrieve_password
         name: Retrieve ECR credentials
         env:
-          AWS_ACCESS_KEY_ID: ${{ACCESS_KEY_ID}}
-          AWS_SECRET_ACCESS_KEY: ${{SECRET_ACCESS_KEY}}
-          AWS_DEFAULT_REGION: ${{REGION}}
+          AWS_ACCESS_KEY_ID: ${{secrets.ACCESS_KEY_ID}}
+          AWS_SECRET_ACCESS_KEY: ${{secrets.SECRET_ACCESS_KEY}}
+          AWS_DEFAULT_REGION: ${{secrets.REGION}}
         run: echo "::set-output name=ecr_password::$(aws ecr get-login-password)"
   
   Run-Container:
